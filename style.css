@@ -1,0 +1,413 @@
+        :root {
+            --emerald-deep:   #0d2b1f;
+            --emerald-mid:    #14422e;
+            --emerald-light:  #1c5c40;
+            --emerald-panel:  #102a1e;
+            --gold:           #c9a84c;
+            --gold-light:     #e2c47a;
+            --gold-pale:      #f5e6b8;
+            --cream:          #faf6ee;
+            --text-main:      #f0ebe0;
+            --text-muted:     #8a9e8e;
+            --text-dim:       #5a7060;
+            --border:         rgba(201,168,76,0.2);
+            --border-subtle:  rgba(201,168,76,0.1);
+            --danger:         #c0604a;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: var(--emerald-deep);
+            background-image:
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            color: var(--text-main);
+            min-height: 100vh;
+        }
+
+        /* ── HEADER ──────────────────────────────────────────── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            height: 64px;
+            background: rgba(13,43,31,0.97);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+        }
+
+        .header-brand h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 22px;
+            letter-spacing: 6px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .header-brand small {
+            font-size: 11px;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .header-brand small b {
+            color: var(--gold-light);
+            font-weight: 500;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-cetak, .btn-logout {
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 9px 20px;
+            border: 1px solid;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .btn-cetak {
+            background: transparent;
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .btn-cetak:hover {
+            background: var(--gold);
+            color: var(--emerald-deep);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-muted);
+        }
+        .btn-logout:hover {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        /* ── LAYOUT ──────────────────────────────────────────── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 36px 40px 60px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* ── FORM PANEL ──────────────────────────────────────── */
+        .form-section {
+            background: linear-gradient(160deg, rgba(20,66,46,0.7), rgba(13,43,31,0.85));
+            border: 1px solid var(--border);
+            padding: 32px 28px;
+            position: relative;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 10%; width: 80%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .form-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .form-section label {
+            display: block;
+            font-size: 9px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 16px;
+            margin-bottom: 7px;
+        }
+
+        .form-section input {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .form-section input:focus {
+            border-color: var(--gold);
+            background: rgba(201,168,76,0.05);
+        }
+
+        .btn-simpan {
+            width: 100%;
+            margin-top: 24px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 12px;
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.25s, color 0.25s;
+        }
+        .btn-simpan:hover {
+            background: var(--gold);
+            color: var(--emerald-deep);
+        }
+
+        /* ── TABLE SECTION ───────────────────────────────────── */
+        .table-section {
+            background: linear-gradient(160deg, rgba(20,66,46,0.5), rgba(13,43,31,0.75));
+            border: 1px solid var(--border);
+            padding: 32px 28px;
+            position: relative;
+        }
+
+        .table-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 5%; width: 90%; height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .table-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+        }
+
+        th {
+            font-family: 'Jost', sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(201,168,76,0.07);
+            padding: 12px 14px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 13px 14px;
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--text-main);
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        tr:hover td {
+            background: rgba(201,168,76,0.04);
+        }
+
+        /* ── ACTION BUTTONS IN TABLE ─────────────────────────── */
+        .btn-edit, .btn-delete {
+            font-family: 'Jost', sans-serif;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 6px 12px;
+            border: 1px solid;
+            margin-right: 6px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-edit {
+            background: transparent;
+            border-color: rgba(201,168,76,0.4);
+            color: var(--gold);
+        }
+        .btn-edit:hover {
+            background: var(--gold);
+            color: var(--emerald-deep);
+        }
+
+        .btn-delete {
+            background: transparent;
+            border-color: rgba(192,96,74,0.4);
+            color: var(--danger);
+        }
+        .btn-delete:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* ── SEARCH BOX ──────────────────────────────────────── */
+        .search-box {
+            margin-bottom: 20px;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-main);
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            font-weight: 300;
+            outline: none;
+            transition: border-color 0.2s, background 0.2s;
+        }
+        .search-box input:focus {
+            border-color: var(--gold);
+            background: rgba(201,168,76,0.05);
+        }
+
+        /* ══════════════════════════════
+           PRINT (Tampilan Cetak Laporan)
+        ══════════════════════════════ */
+        @media print {
+            /* 1. HILANGKAN HEADER/FOOTER BAWAAN BROWSER (Tanggal & Link) */
+            @page { margin: 0; }
+            
+            /* 2. Sembunyikan elemen layar yang tidak perlu dicetak */
+            .header, .form-section, .aksi-kolom, .search-box { display: none !important; }
+            
+            /* 3. Bersihkan background, beri jarak aman kertas, & TEBALKAN TEKS */
+            body { 
+                background: white; 
+                margin: 0; 
+                padding: 1.5cm !important; /* Jarak aman tepi kertas */
+                color: black; 
+                font-weight: bold !important; /* Paksa seluruh halaman jadi Bold */
+            }
+            body::before, body::after { display: none; }
+            
+            /* 4. Matikan CSS Grid */
+            .container { 
+                display: block !important; 
+                width: 100%; 
+                max-width: 100%; 
+                padding: 0; 
+                margin: 0; 
+            }
+            
+            /* 5. Bersihkan Wrapper */
+            .table-section { 
+                padding: 0 !important; 
+                width: 100%; 
+                border: none !important; 
+                background: transparent !important;
+            }
+            .table-section::before, .table-section::after { display: none !important; }
+            
+            /* 6. Rapikan Judul Laporan (Rata Tengah & Bold) */
+            .table-section h3 { 
+                text-align: center !important; 
+                font-size: 22px !important; 
+                color: #c9a84c !important; 
+                margin-bottom: 24px !important;
+                border: none !important; 
+                padding: 0 !important;
+                font-weight: bold !important;
+            }
+
+            /* 7. Rapikan Tabel (Garis warna emas) */
+            table { 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                border: 2px solid #c9a84c !important; 
+                margin: 0 !important;
+            }
+            th { 
+                background-color: #fcf9f2 !important; 
+                color: black !important; 
+                text-align: center; 
+                border: 1px solid #c9a84c !important; 
+                padding: 12px;
+                font-weight: bold !important; /* Header tebal */
+                -webkit-print-color-adjust: exact; 
+                print-color-adjust: exact;
+            }
+            td { 
+                color: black !important; 
+                border: 1px solid #c9a84c !important; 
+                padding: 10px;
+                text-align: center; 
+                font-weight: bold !important; /* Isi tabel tebal */
+            }
+            
+            /* Khusus nama merk dan tipe dibiarkan rata kiri agar mudah dibaca */
+            td:nth-child(2), td:nth-child(3) { 
+                text-align: left; 
+            }
+
+            /* Sembunyikan header cetak di layar biasa */
+            .print-only { display: none; }
+
+            /* Munculkan dan rapikan waktu cetak */
+            .print-only { 
+                display: flex !important; 
+                justify-content: space-between !important; 
+                font-size: 12px !important;
+                margin-bottom: 20px !important;
+                padding-bottom: 8px !important;
+                border-bottom: 2px solid black !important;
+                color: black !important;
+            }
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield; /* Khusus untuk Firefox */
+            appearance: textfield;
+        }
