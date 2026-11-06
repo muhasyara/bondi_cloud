@@ -1,0 +1,4 @@
+# Mengabaikan file sistem dan editor
+.vscode/
+.DS_Store
+*.log

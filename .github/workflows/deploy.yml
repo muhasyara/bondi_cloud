@@ -1,0 +1,51 @@
+name: Deploy Aplikasi SINGKAT ke GCE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Langkah 1: Mengambil kode terbaru dari GitHub
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Langkah 2: Mengirim kode ke Server Google menggunakan SSH
+      - name: Copy files to GCE Server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.GCP_VM_IP }}
+          username: github-actions
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          source: "."
+          target: "/home/github-actions/app"
+
+      # Langkah 3: Masuk ke Server, Install Docker, dan Nyalakan Aplikasi
+      - name: Build and Run Docker Container
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.GCP_VM_IP }}
+          username: github-actions
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          script: |
+            # Menginstal Docker di Ubuntu jika belum ada
+            if ! command -v docker &> /dev/null; then
+              sudo apt-get update
+              sudo apt-get install -y docker.io
+            fi
+            
+            # Masuk ke folder kode yang baru saja dikirim
+            cd /home/github-actions/app
+            
+            # Menghentikan aplikasi versi lama (jika ada)
+            sudo docker stop aplikasi-singkat || true
+            sudo docker rm aplikasi-singkat || true
+            
+            # Merakit ulang aplikasi dengan kode terbaru
+            sudo docker build -t aplikasi-singkat .
+            
+            # Menyalakan aplikasi agar bisa diakses internet
+            sudo docker run -d -p 80:80 --name aplikasi-singkat aplikasi-singkat
