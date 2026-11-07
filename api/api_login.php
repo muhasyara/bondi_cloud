@@ -15,7 +15,9 @@ $password = $data['password'] ?? '';
 
 // Cek data pengguna di tabel 'users'
 $stmt = $koneksi->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
-$stmt->execute([$username, $password]);
+// Bind parameter terlebih dahulu secara terpisah, lalu jalankan execute tanpa argumen:
+$stmt->bind_param("s", $username);
+$stmt->execute(); // <-- BENAR, kosong tanpa argumen
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($user) {
