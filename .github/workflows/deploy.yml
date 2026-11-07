@@ -45,3 +45,6 @@ jobs:
 
             # 4. BANGUN & NYALAKAN APLIKASI
             sudo docker-compose up -d --build
+
+
+            
