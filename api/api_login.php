@@ -13,12 +13,12 @@ if (!$data) {
 $username = $data['username'] ?? '';
 $password = $data['password'] ?? '';
 
-// Cek data pengguna di tabel 'users'
+// Cek data pengguna di tabel 'users' menggunakan prepared statement mysqli yang benar
 $stmt = $koneksi->prepare("SELECT * FROM users WHERE username = ? AND password = ?");
-// Bind parameter terlebih dahulu secara terpisah, lalu jalankan execute tanpa argumen:
-$stmt->bind_param("s", $username);
-$stmt->execute(); // <-- BENAR, kosong tanpa argumen
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->bind_param("ss", $username, $password);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
 
 if ($user) {
     echo json_encode([
