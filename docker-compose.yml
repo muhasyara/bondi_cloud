@@ -22,4 +22,5 @@ services:
     restart: always
 
 volumes:
-  db_data:
+      - db_data:/var/lib/mysql
+      - ./db_inventaris.sql:/docker-entrypoint-initdb.d/db_inventaris.sql
