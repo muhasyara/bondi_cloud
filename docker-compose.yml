@@ -6,7 +6,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - .:/app
+      - .:/var/www/html
     depends_on:
       - db
     restart: always
@@ -15,12 +15,12 @@ services:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     environment:
-      MYSQL_ROOT_PASSWORD: root # Ganti dengan password pilihanmu
-      MYSQL_DATABASE: db_inventaris # Ganti dengan nama database aplikasimu
+      MYSQL_ROOT_PASSWORD: password_rahasia
+      MYSQL_DATABASE: db_inventaris
     volumes:
       - db_data:/var/lib/mysql
+      - ./db_inventaris.sql:/docker-entrypoint-initdb.d/db_inventaris.sql
     restart: always
 
 volumes:
-      - db_data:/var/lib/mysql
-      - ./db_inventaris.sql:/docker-entrypoint-initdb.d/db_inventaris.sql
+  db_data:
