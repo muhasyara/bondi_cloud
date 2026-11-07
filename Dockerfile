@@ -1,17 +1,13 @@
-# Menggunakan cetakan server LAMP (Linux, Apache, MySQL, PHP) siap pakai
-FROM mattrayner/lamp:latest-1804
+FROM php:8.0-apache
 
-# Menghapus file bawaan Apache
-RUN rm -fr /app/*
+# Menginstal ekstensi MySQL untuk PHP
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Memasukkan seluruh kodingan BONDI (HTML, CSS, JS, PHP) ke dalam folder server web di Docker
-COPY . /app/
+# Mengaktifkan mode rewrite Apache (berguna jika aplikasimu menggunakan URL bersih)
+RUN a2enmod rewrite
 
-# Memberikan hak akses agar server bisa membaca file
-RUN chmod -R 755 /app
+# Menyalin file kode ke dalam folder yang dibaca oleh Apache
+COPY . /var/www/html/
 
-# Mengekspos port 80 agar bisa diakses lewat browser (internet)
-EXPOSE 80
-
-# Menjalankan script bawaan untuk menghidupkan Apache dan MySQL secara bersamaan
-CMD ["/run.sh"]
+# Memberikan hak akses agar Apache bisa membaca file
+RUN chown -R www-data:www-data /var/www/html/
