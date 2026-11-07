@@ -1,4 +1,4 @@
-name: Deploy Aplikasi SINGKAT ke GCE
+name: Auto Deploy SINGKAT ke GCE
 
 on:
   push:
@@ -9,12 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # Langkah 1: Mengambil kode terbaru dari GitHub
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Langkah 2: Mengirim kode ke Server Google menggunakan SSH
-      - name: Copy files to GCE Server
+      - name: Kirim File ke GCE Server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
@@ -23,26 +21,27 @@ jobs:
           source: "."
           target: "/home/github-actions/app"
 
-      # Langkah 3: Masuk ke Server, Install Docker, dan Nyalakan Aplikasi
-      - name: Build and Run Docker Container
+      - name: Eksekusi Setup & Run Otomatis
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.GCP_VM_IP }}
           username: github-actions
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           script: |
-            # Menginstal Docker Compose jika belum ada
+            # 1. OTOMATISASI INSTALL DOCKER
             if ! command -v docker-compose &> /dev/null; then
               sudo apt-get update
-              sudo apt-get install -y docker-compose
+              sudo apt-get install -y docker.io docker-compose
             fi
-            
+
+            # 2. MASUK KE FOLDER PROYEK
             cd /home/github-actions/app
-            
-            # Mematikan kontainer lama (menggunakan cara baru dan cara lama agar aman)
-            sudo docker stop aplikasi-singkat || true
-            sudo docker rm aplikasi-singkat || true
+
+            # 3. OTOMATISASI PEMBERSIHAN
             sudo docker-compose down || true
-            
-            # Menyalakan aplikasi menggunakan konfigurasi baru yang lebih ringan
+            sudo docker stop $(sudo docker ps -aq) || true
+            sudo docker rm $(sudo docker ps -aq) || true
+            sudo docker network prune -f
+
+            # 4. BANGUN & NYALAKAN APLIKASI
             sudo docker-compose up -d --build
