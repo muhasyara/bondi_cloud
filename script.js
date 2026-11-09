@@ -50,7 +50,7 @@ function logout() {
 
 // 3. LOGIKA CRUD SEPERTI BIASA
 
-const apiUrl = 'api/api_barang.php';
+const apiUrl = '/api/api_barang.php';
 
 
 
@@ -58,7 +58,7 @@ async function muatData() {
 
     try {
 
-        const response = await fetch('api/api_logs.php');
+        const response = await fetch('/api/api_logs.php');
 
         const dataTas = await response.json();
 
