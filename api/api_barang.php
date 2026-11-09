@@ -9,7 +9,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 if ($method === 'GET') {
     $stmt = $koneksi->prepare("SELECT * FROM tas ORDER BY id DESC");
     $stmt->execute();
-    $hasil = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->get_result();
+    
+    // Menggunakan fetch_all standar MySQLi
+    $hasil = $result->fetch_all(MYSQLI_ASSOC);
     
     echo json_encode($hasil);
 }
@@ -18,13 +21,16 @@ if ($method === 'GET') {
 elseif ($method === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     
-    $merk = $data['merk'];
-    $tipe = $data['tipe'];
-    $harga = $data['harga'];
-    $stok = $data['stok'];
+    $merk = $data['merk'] ?? '';
+    $tipe = $data['tipe'] ?? '';
+    $harga = $data['harga'] ?? '';
+    $stok = $data['stok'] ?? '';
 
     $stmt = $koneksi->prepare("INSERT INTO tas (merk, tipe, harga, stok) VALUES (?, ?, ?, ?)");
-    if ($stmt->execute([$merk, $tipe, $harga, $stok])) {
+    // Gunakan bind_param (s = string) untuk semua variabel
+    $stmt->bind_param("ssss", $merk, $tipe, $harga, $stok);
+    
+    if ($stmt->execute()) {
         echo json_encode(["status" => "sukses", "pesan" => "Data berhasil ditambahkan"]);
     } else {
         echo json_encode(["status" => "gagal", "pesan" => "Gagal menambah data"]);
@@ -38,17 +44,21 @@ elseif ($method === 'PUT') {
     $data = json_decode(file_get_contents("php://input"), true);
     
     if ($id && $data) {
-        $merk = $data['merk'];
-        $tipe = $data['tipe'];
-        $harga = $data['harga'];
-        $stok = $data['stok'];
+        $merk = $data['merk'] ?? '';
+        $tipe = $data['tipe'] ?? '';
+        $harga = $data['harga'] ?? '';
+        $stok = $data['stok'] ?? '';
 
         $stmt = $koneksi->prepare("UPDATE tas SET merk = ?, tipe = ?, harga = ?, stok = ? WHERE id = ?");
-        if ($stmt->execute([$merk, $tipe, $harga, $stok, $id])) {
+        $stmt->bind_param("sssss", $merk, $tipe, $harga, $stok, $id);
+        
+        if ($stmt->execute()) {
             echo json_encode(["status" => "sukses", "pesan" => "Data berhasil diupdate"]);
         } else {
             echo json_encode(["status" => "gagal", "pesan" => "Gagal mengupdate data"]);
         }
+    } else {
+        echo json_encode(["status" => "gagal", "pesan" => "Data atau ID tidak valid"]);
     }
 }
 
@@ -59,11 +69,15 @@ elseif ($method === 'DELETE') {
     
     if ($id) {
         $stmt = $koneksi->prepare("DELETE FROM tas WHERE id = ?");
-        if ($stmt->execute([$id])) {
+        $stmt->bind_param("s", $id);
+        
+        if ($stmt->execute()) {
             echo json_encode(["status" => "sukses", "pesan" => "Data berhasil dihapus"]);
         } else {
             echo json_encode(["status" => "gagal", "pesan" => "Gagal menghapus data"]);
         }
+    } else {
+        echo json_encode(["status" => "gagal", "pesan" => "ID tidak valid"]);
     }
 }
 ?>
