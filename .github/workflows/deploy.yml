@@ -29,9 +29,11 @@ jobs:
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           script: |
             # 1. OTOMATISASI INSTALL DOCKER
-            if ! command -v docker-compose &> /dev/null; then
-              sudo apt-get update
+              if ! command -v docker-compose &> /dev/null; then            
+              sudo apt-get update            
               sudo apt-get install -y docker.io docker-compose
+              sudo systemctl enable docker  # <-- Tambahkan baris ini
+              sudo systemctl start docker   # <-- Tambahkan baris ini
             fi
 
             # 2. MASUK KE FOLDER PROYEK
